@@ -19,5 +19,6 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
+  trustedOrigins: ["https://habiton-1r1z.vercel.app", "http://localhost:3000"],
   plugins: [nextCookies()],
 });
