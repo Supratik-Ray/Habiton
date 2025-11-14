@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/sidebar";
 
 import { type User } from "@/lib/types";
-import UserAvatar from "./UserAvatar";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
