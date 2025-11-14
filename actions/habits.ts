@@ -2,8 +2,9 @@
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { ActionResponse, HabitField, ZodErrors } from "@/lib/types";
+import { ActionResponse, HabitField, User, ZodErrors } from "@/lib/types";
 import { habitSchema, THabitSchema } from "@/lib/validators";
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
 class AuthError extends Error {
@@ -38,5 +39,32 @@ export const addHabit = async (
       return { success: false, error: error.message };
     }
     return { success: false, error: "Something went wrong!" };
+  }
+};
+
+type DeleteHabitResponse = Promise<
+  { success: true } | { success: false; error: string }
+>;
+
+export const deleteHabit = async (id: number): DeleteHabitResponse => {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session)
+    return {
+      success: false,
+      error: "you are not authorized to delete this habit!",
+    };
+  try {
+    const deleted = await prisma.habit.delete({
+      where: { id, userId: session.user.id },
+    });
+
+    if (!deleted) return { success: false, error: "Habit not found!" };
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: "Couldn't delete habit. Some error occured!",
+    };
   }
 };
