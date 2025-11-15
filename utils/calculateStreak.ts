@@ -7,14 +7,16 @@ type calculateStreakParams = {
   days: Habit["days"];
 };
 
-const DAY_CODE = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+//TODO: might change to ISOMAPPING (MON->0 SUN->6) later on
+
+export const DAY_CODE = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 const isValidDay = (date: Dayjs, habitDays: Habit["days"]) => {
   const day = date.day();
   return habitDays.includes(DAY_CODE[day] as Habit["days"][0]);
 };
 
-const toKey = (date: Date) => {
+export const toKey = (date: Date) => {
   return dayjs(date).startOf("day").format("YYYY-MM-DD");
 };
 

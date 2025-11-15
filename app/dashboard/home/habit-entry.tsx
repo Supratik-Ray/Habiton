@@ -1,5 +1,5 @@
 "use client";
-import { Habit } from "@prisma/client";
+import { Habit, Progress } from "@prisma/client";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import ProgressBar from "./progress-bar";
@@ -8,10 +8,23 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import Image from "next/image";
+import { CATEGORY_BADGE_COLORS } from "@/lib/options";
 
-export default function HabitEntry({ habit }: { habit: Habit }) {
-  const [isDone, setIsDone] = useState(false);
+type HabitEntry = Habit & {
+  habitDoneToday: boolean;
+  weekProgress: Progress[];
+  streak: number;
+};
+
+export default function HabitEntry({ habit }: { habit: HabitEntry }) {
+  const [isDone, setIsDone] = useState(habit.habitDoneToday);
   const [inProgress, setInProgress] = useState(false);
+
+  const totalHabitsPerWeek =
+    habit.frequencyType === "daily" ? 7 : habit.days.length;
+  const progressPercent = Math.round(
+    (habit.weekProgress.length / totalHabitsPerWeek) * 100
+  );
 
   const handleDone = async (habitId: number) => {
     setInProgress(true);
@@ -40,24 +53,35 @@ export default function HabitEntry({ habit }: { habit: Habit }) {
     <TableRow
       key={habit.id}
       className={`grid grid-cols-5 ${
-        isDone ? "bg-green-200 hover:bg-green-200" : ""
+        isDone ? "bg-green-100 hover:bg-green-100" : ""
       }`}
     >
       <TableCell className="place-content-center text-black/70 font-semibold">
         {habit.name}
       </TableCell>
       <TableCell className="place-content-center">
-        <span className="bg-amber-500 rounded-md px-3 py-1 font-semibold text-white">
+        <span
+          className={`${
+            CATEGORY_BADGE_COLORS[habit.category]
+          } bg-amber-500 rounded-md px-3 py-1 font-semibold text-white`}
+        >
           {habit.category}
         </span>
       </TableCell>
       <TableCell className="place-content-center">
-        <ProgressBar />
+        <ProgressBar value={progressPercent} />
       </TableCell>
       <TableCell className="place-content-center text-lg">
         <div className="flex gap-2 items-center">
-          <Image src={"/flame.webp"} alt="flame image" height={30} width={30} />{" "}
-          <span>3</span>
+          {habit.streak > 0 && (
+            <Image
+              src={"/flame.webp"}
+              alt="flame image"
+              height={30}
+              width={30}
+            />
+          )}
+          <span>{habit.streak}</span>
         </div>
       </TableCell>
       <TableCell className="place-content-center">
