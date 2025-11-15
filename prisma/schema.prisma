@@ -106,4 +106,14 @@ model Habit {
   updatedAt     DateTime      @updatedAt
   userId        String
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progressRecords Progress[]
+
+}
+
+model Progress{
+  id String @id @default(uuid())
+  date DateTime 
+  habitId Int
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  @@unique([habitId,date])
 }

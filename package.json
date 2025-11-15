@@ -10,6 +10,7 @@
     "prisma:generate": "dotenv -e .env.local -- npx prisma generate",
     "prisma:migrate": "dotenv -e .env.local -- npx prisma migrate dev",
     "prisma:studio": "dotenv -e .env.local -- npx prisma studio",
+    "prisma:dbpush": "dotenv -e .env.local -- npx prisma db push",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -30,6 +31,7 @@
     "better-sqlite3": "^12.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "lucide-react": "^0.553.0",
     "next": "16.0.1",

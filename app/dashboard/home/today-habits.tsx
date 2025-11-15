@@ -1,10 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
   TableCaption,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -14,7 +11,7 @@ import prisma from "@/lib/prisma";
 import { Days } from "@prisma/client";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import ProgressBar from "./progress-bar";
+import HabitEntry from "./habit-entry";
 
 const dayMapping: Record<number, Days> = {
   1: "MON",
@@ -57,23 +54,7 @@ export default async function TodayHabits() {
       </TableHeader>
       <TableBody>
         {todayHabits.map((habit) => (
-          <TableRow key={habit.id} className="grid grid-cols-5">
-            <TableCell className="place-content-center text-black/70 font-semibold">
-              {habit.name}
-            </TableCell>
-            <TableCell className="place-content-center">
-              <span className="bg-amber-500 rounded-md px-3 py-1 font-semibold text-white">
-                {habit.category}
-              </span>
-            </TableCell>
-            <TableCell className="place-content-center">
-              <ProgressBar />
-            </TableCell>
-            <TableCell className="place-content-center text-lg">🔥3</TableCell>
-            <TableCell className="place-content-center">
-              <Button className="cursor-pointer">Done</Button>
-            </TableCell>
-          </TableRow>
+          <HabitEntry habit={habit} />
         ))}
       </TableBody>
     </Table>
