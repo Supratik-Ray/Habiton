@@ -21,6 +21,8 @@ model User {
   sessions      Session[]
   accounts      Account[]
   habits        Habit[]
+  progressRecords    Progress[]
+  highestStreak Int @default(0)
 
   @@unique([email])
   @@map("user")
@@ -115,5 +117,7 @@ model Progress{
   date DateTime 
   habitId Int
   habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  userId String  
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
   @@unique([habitId,date])
 }

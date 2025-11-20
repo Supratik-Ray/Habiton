@@ -1,4 +1,4 @@
-import AddHabitForm from "@/components/addHabit/AddHabitForm";
+import AddHabitForm from "@/components/add-habit/AddHabitForm";
 
 export default function AddHabit() {
   return (

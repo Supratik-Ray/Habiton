@@ -12,7 +12,7 @@ import prisma from "@/lib/prisma";
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import ActionButtons from "./actionButtons";
+import ActionButtons from "../../../components/manage-habits/action-buttons";
 
 export default async function ManageHabits() {
   const session = await auth.api.getSession({ headers: await headers() });
